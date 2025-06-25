@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+
+<html lang="en" class="scroll-smooth">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>The Mindset Makeover: Your Path to Viral Power!</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <!-- Chosen Palette: Creator Glow -->
+
+    <!-- Application Structure Plan: The SPA uses a single-page, vertical scrolling structure with a sticky top navigation for easy access to the three core thematic sections: 'Camera Confidence', 'No One Cares', and 'Your Why'. This structure was chosen because it mirrors the user's psychological journey from overcoming initial fear to building sustainable motivation, as laid out in the source document. Key interactions include interactive checklists, text inputs for reflection, and a dynamic Chart.js visualization for progress tracking. This transforms passive reading into an active, engaging experience, which is more effective for the target audience of creators. -->
+
+    <!-- Visualization & Content Choices:
+
+        - Report Info: 'Practice Makes Perfect' Log -> Goal: Track daily practice -> Viz/Method: Interactive HTML checklist -> Interaction: User clicks to mark completion -> Justification: Simple, direct feedback for daily habit building.
+
+        - Report Info: Mindset Shift/Camera Hacks -> Goal: Inform & Reinforce -> Viz/Method: Interactive HTML checklists/cards -> Interaction: User clicks to check off items -> Justification: Reinforces learning through physical interaction.
+
+        - Report Info: 'Consistency Crew Tracker' -> Goal: Visualize long-term progress -> Viz/Method: Bar Chart -> Interaction: User clicks a button to add a week of progress, updating the chart dynamically -> Justification: Provides a powerful, motivating visual representation of accumulated effort, making the concept of exponential growth tangible. Library: Chart.js.
+
+        - Report Info: Reflection Questions/Fill-in-the-blanks -> Goal: Encourage self-reflection -> Viz/Method: HTML text areas -> Interaction: User types directly into the fields -> Justification: Creates a personal, digital journal space within the app.
+
+    -->
+
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <style>
+        body {
+
+            font-family: 'Poppins', sans-serif;
+
+            background-color: #FFFBF5;
+
+            color: #4A4A4A;
+
+        }
+
+        .bg-cream {
+            background-color: #FFFBF5;
+        }
+
+        .bg-peach {
+            background-color: #FFEEE3;
+        }
+
+        .text-coral {
+            color: #FF6B6B;
+        }
+
+        .bg-coral {
+            background-color: #FF6B6B;
+        }
+
+        .border-coral {
+            border-color: #FF6B6B;
+        }
+
+        .text-teal {
+            color: #4ECDC4;
+        }
+
+        .bg-teal {
+            background-color: #4ECDC4;
+        }
+
+        .accent-coral {
+            accent-color: #FF6B6B;
+        }
+
+        .accent-teal {
+            accent-color: #4ECDC4;
+        }
+
+        .chart-container {
+
+            position: relative;
+
+            width: 100%;
+
+            max-width: 600px;
+
+            margin-left: auto;
+
+            margin-right: auto;
+
+            height: 320px;
+
+            max-height: 400px;
+
+        }
+
+        @media (min-width: 640px) {
+
+            .chart-container {
+
+                height: 350px;
+
+            }
+
+        }
+
+        .nav-link {
+
+            transition: all 0.3s ease;
+
+        }
+
+        .nav-link:hover {
+
+            color: #FF6B6B;
+
+            transform: translateY(-2px);
+
+        }
+
+        .card {
+
+            background-color: white;
+
+            border-radius: 1rem;
+
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+        }
+
+        .card:hover {
+
+            transform: translateY(-5px);
+
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+
+        }
+
+        .interactive-checklist-item {
+
+            transition: all 0.2s ease-in-out;
+
+        }
+
+        .interactive-checklist-item.completed {
+
+            text-decoration: line-through;
+
+            color: #9CA3AF;
+
+        }
+    </style>
+
+</head>
+
+<body class="bg-cream">
+
+
+
+    <!-- Header & Navigation -->
+
+    <header class="bg-cream/80 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
+
+        <nav class="container mx-auto px-6 py-4 flex flex-col items-center">
+
+            <h1 class="text-xl md:text-2xl font-bold text-coral mb-4">Fix your mindset</h1>
+
+            <div class="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-8 items-center">
+
+                <a href="#camera" class="nav-link font-semibold">📸 Camera Confidence</a>
+
+                <a href="#no-one-cares" class="nav-link font-semibold">🤫 No One Cares</a>
+
+                <a href="#why" class="nav-link font-semibold">🌟 Your Why</a>
+
+            </div>
+
+            <button id="mobile-menu-button" class="md:hidden text-2xl absolute top-4 right-6">☰</button>
+
+        </nav>
+
+        <div id="mobile-menu" class="hidden md:hidden flex-col items-center py-4 space-y-4 bg-cream">
+
+            <a href="#camera" class="nav-link font-semibold">📸 Camera Confidence</a>
+
+            <a href="#no-one-cares" class="nav-link font-semibold">🤫 No One Cares</a>
+
+            <a href="#why" class="nav-link font-semibold">🌟 Your Why</a>
+
+        </div>
+
+    </header>
+
+
+
+    <main class="container mx-auto px-6 py-8 md:py-16">
+
+
+
+        <!-- Hero Section -->
+
+        <section class="text-center mb-16 md:mb-24">
+
+            <h2 class="text-4xl md:text-6xl font-bold mb-4">Your Path to <span class="text-coral">Viral Power!</span>
+            </h2>
+
+            <p class="max-w-3xl mx-auto text-lg md:text-xl text-gray-600">
+
+                Ready to banish camera jitters and conquer your content dreams? This isn't just a worksheet; it's your
+                interactive launchpad to fame. Let's unlock your true potential together!
+
+            </p>
+
+        </section>
+
+
+
+        <!-- Section 1: Conquering the Camera -->
+
+        <section id="camera" class="mb-16 md:mb-24 scroll-mt-20">
+
+            <h3 class="text-3xl md:text-4xl font-bold text-center mb-2">📸 Section 1: Camera Confidence</h3>
+
+            <p class="text-center text-gray-500 mb-12 max-w-2xl mx-auto">Feeling shy? Totally normal! Confidence is a
+                skill, and this is your personal bootcamp. No judgment, just pure growth. Let's start by getting real
+                with ourselves.</p>
+
+
+
+            <div class="grid md:grid-cols-2 gap-8 items-start">
+
+                <div class="card p-6 md:p-8">
+
+                    <h4 class="font-bold text-xl mb-4">🤔 Your Honest Reflection</h4>
+
+                    <p class="mb-4">What's the *scariest* thing about hitting 'record' right now? Let it out!</p>
+
+                    <textarea id="reflectionQuestion"
+                        class="w-full h-32 p-3 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-teal focus:border-teal transition"
+                        placeholder="Be honest, no one's watching..."></textarea>
+
+                </div>
+
+
+
+                <div class="card p-6 md:p-8">
+
+                    <h4 class="font-bold text-xl mb-4">🚀 The "Practice Makes Perfect" Challenge</h4>
+
+                    <p class="mb-4">Your mission: Record yourself daily for a week. No posting required! Just talk to
+                        the camera. Check off each day to track your progress.</p>
+
+                    <div id="practice-log" class="space-y-3">
+
+                        <!-- JS will populate this -->
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="card p-6 md:p-8 mt-8">
+
+                <h4 class="font-bold text-xl mb-4 text-center">💡 My Camera Hacks Checklist</h4>
+
+                <div class="grid md:grid-cols-3 gap-6 text-center">
+
+                    <div class="bg-peach p-4 rounded-lg">
+
+                        <h5 class="font-semibold text-lg mb-2">🙈 Hide the Screen</h5>
+
+                        <p class="text-sm text-gray-700">Focus on the lens, not your reflection. This makes it feel more
+                            like a conversation!</p>
+
+                    </div>
+
+                    <div class="bg-peach p-4 rounded-lg">
+
+                        <h5 class="font-semibold text-lg mb-2">👋 Talk to a Bestie</h5>
+
+                        <p class="text-sm text-gray-700">Pretend you're sending a video to your favorite person. Instant
+                            chill vibes guaranteed.</p>
+
+                    </div>
+
+                    <div class="bg-peach p-4 rounded-lg">
+
+                        <h5 class="font-semibold text-lg mb-2">💯 Be 100% YOU</h5>
+
+                        <p class="text-sm text-gray-700">Authenticity is magnetic. Trying to be someone else is
+                            draining. Let your true self shine!</p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- Section 2: No One Cares -->
+
+        <section id="no-one-cares" class="mb-16 md:mb-24 scroll-mt-20">
+
+            <h3 class="text-3xl md:text-4xl font-bold text-center mb-2">🤫 Section 2: The "No One Cares" Blueprint</h3>
+
+            <p class="text-center text-gray-500 mb-12 max-w-2xl mx-auto">Worried about what people will think? Here's a
+                secret: they're too busy worrying about themselves! Embracing this is your creative superpower.</p>
+
+
+
+            <div class="grid md:grid-cols-2 gap-8 items-start">
+
+                <div class="card p-6 md:p-8">
+
+                    <h4 class="font-bold text-xl mb-4">📝 My Biggest Fear Is...</h4>
+
+                    <p class="mb-4">When I think about posting online, I'm most scared of...</p>
+
+                    <input type="text" id="biggestFear"
+                        class="w-full p-3 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-coral focus:border-coral transition"
+                        placeholder="...what my friends might say?">
+
+                </div>
+
+
+
+                <div class="card p-6 md:p-8">
+
+                    <h4 class="font-bold text-xl mb-4">✅ My Mindset Shift Checklist</h4>
+
+                    <p class="mb-4">Internalize these truths. Check them off when you truly believe them.</p>
+
+                    <ul class="space-y-3" id="mindset-checklist">
+
+                        <li class="flex items-center"><input type="checkbox" id="mindsetShift_1"
+                                class="h-5 w-5 rounded mr-3 accent-coral"><span
+                                class="interactive-checklist-item">Everyone started somewhere (even the stars!).</span>
+                        </li>
+
+                        <li class="flex items-center"><input type="checkbox" id="mindsetShift_2"
+                                class="h-5 w-5 rounded mr-3 accent-coral"><span class="interactive-checklist-item">Ups &
+                                downs are normal, not a sign to quit.</span></li>
+
+                        <li class="flex items-center"><input type="checkbox" id="mindsetShift_3"
+                                class="h-5 w-5 rounded mr-3 accent-coral"><span class="interactive-checklist-item">I
+                                choose growth over the regret of not trying.</span></li>
+
+                    </ul>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- Section 3: Your Unstoppable Why -->
+
+        <section id="why" class="scroll-mt-20">
+
+            <h3 class="text-3xl md:text-4xl font-bold text-center mb-2">🌟 Section 3: Your Unstoppable WHY!</h3>
+
+            <p class="text-center text-gray-500 mb-12 max-w-2xl mx-auto">The journey has lows. Your "Why" is the fuel
+                that will push you through them. Let's define your ultimate motivation and track your epic consistency!
+            </p>
+
+
+
+            <div class="card p-6 md:p-8 mb-8">
+
+                <h4 class="font-bold text-xl mb-4">✍️ My Dream Life Vision</h4>
+
+                <div class="grid md:grid-cols-3 gap-6">
+
+                    <div>
+
+                        <label class="font-semibold block mb-2">If I had a massive following, I could...</label>
+
+                        <textarea id="dreamLifeVision_1"
+                            class="w-full h-32 p-3 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-teal focus:border-teal transition"
+                            placeholder="...travel the world, quit my job, help others..."></textarea>
+
+                    </div>
+
+                    <div>
+
+                        <label class="font-semibold block mb-2">My brand will change my life by...</label>
+
+                        <textarea id="dreamLifeVision_2"
+                            class="w-full h-32 p-3 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-teal focus:border-teal transition"
+                            placeholder="...giving me freedom, connecting me with amazing people..."></textarea>
+
+                    </div>
+
+                    <div>
+
+                        <label class="font-semibold block mb-2">The #1 thing I want to accomplish is...</label>
+
+                        <textarea id="dreamLifeVision_3"
+                            class="w-full h-32 p-3 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-teal focus:border-teal transition"
+                            placeholder="...building a community, sharing my passion..."></textarea>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="card p-6 md:p-8">
+
+                <h4 class="font-bold text-xl text-center mb-2">📈 My Consistency Crew Tracker</h4>
+
+                <p class="text-center text-gray-500 mb-6">Aim for 3 months of consistent posting. Each week you post,
+                    click the button below to fill your progress bar. Watch your efforts stack up!</p>
+
+                <div class="chart-container mb-6">
+
+                    <canvas id="consistencyChart"></canvas>
+
+                </div>
+
+                <div class="text-center">
+
+                    <button id="addWeekButton"
+                        class="bg-coral text-white font-bold py-3 px-8 rounded-full hover:bg-opacity-90 transition-transform hover:scale-105">
+
+                        I Posted This Week! (+1)
+
+                    </button>
+
+                    <button id="resetChartButton"
+                        class="bg-gray-300 text-gray-700 font-bold py-3 px-6 rounded-full hover:bg-opacity-90 transition-transform hover:scale-105 ml-4">
+
+                        Reset
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+    </main>
+
+
+
+    <footer class="text-center py-12">
+
+        <p class="text-2xl font-bold">✨ You've Got This, Creator! ✨</p>
+
+        <p class="text-gray-600 mt-2">Keep practicing, keep believing, and keep showing up. The world is waiting for
+            YOU. Go create magic! 🚀</p>
+
+    </footer>
+
+
+
+
+
+    <script>
+
+        document.addEventListener('DOMContentLoaded', function () {
+
+            // Mobile Menu
+
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+
+            const mobileMenu = document.getElementById('mobile-menu');
+
+            mobileMenuButton.addEventListener('click', () => {
+
+                mobileMenu.classList.toggle('hidden');
+
+                mobileMenu.classList.toggle('flex');
+
+            });
+
+
+
+            document.querySelectorAll('#mobile-menu a').forEach(link => {
+
+                link.addEventListener('click', () => {
+
+                    mobileMenu.classList.add('hidden');
+
+                    mobileMenu.classList.remove('flex');
+
+                });
+
+            });
+
+
+
+            // Auto-save functions
+
+            function saveState() {
+
+                const state = {
+
+                    reflectionQuestion: document.getElementById('reflectionQuestion').value,
+
+                    biggestFear: document.getElementById('biggestFear').value,
+
+                    dreamLifeVision_1: document.getElementById('dreamLifeVision_1').value,
+
+                    dreamLifeVision_2: document.getElementById('dreamLifeVision_2').value,
+
+                    dreamLifeVision_3: document.getElementById('dreamLifeVision_3').value,
+
+                    postedWeeks: window.postedWeeks, // Access the global variable
+
+                    practiceLog: [],
+
+                    mindsetShift: [],
+
+                };
+
+
+
+                // Save practice log checkboxes
+
+                document.querySelectorAll('#practice-log input[type="checkbox"]').forEach((checkbox, index) => {
+
+                    state.practiceLog.push(checkbox.checked);
+
+                });
+
+
+
+                // Save mindset shift checkboxes
+
+                document.querySelectorAll('#mindset-checklist input[type="checkbox"]').forEach((checkbox, index) => {
+
+                    state.mindsetShift.push(checkbox.checked);
+
+                });
+
+
+
+                localStorage.setItem('tiktokMindsetSPAState', JSON.stringify(state));
+
+            }
+
+
+
+            function loadState() {
+
+                const savedState = localStorage.getItem('tiktokMindsetSPAState');
+
+                if (savedState) {
+
+                    const state = JSON.parse(savedState);
+
+
+
+                    document.getElementById('reflectionQuestion').value = state.reflectionQuestion || '';
+
+                    document.getElementById('biggestFear').value = state.biggestFear || '';
+
+                    document.getElementById('dreamLifeVision_1').value = state.dreamLifeVision_1 || '';
+
+                    document.getElementById('dreamLifeVision_2').value = state.dreamLifeVision_2 || '';
+
+                    document.getElementById('dreamLifeVision_3').value = state.dreamLifeVision_3 || '';
+
+
+
+                    // Load practice log checkboxes
+
+                    document.querySelectorAll('#practice-log input[type="checkbox"]').forEach((checkbox, index) => {
+
+                        if (state.practiceLog[index] !== undefined) {
+
+                            checkbox.checked = state.practiceLog[index];
+
+                            checkbox.dispatchEvent(new Event('change')); // Trigger change to update styling
+
+                        }
+
+                    });
+
+
+
+                    // Load mindset shift checkboxes
+
+                    document.querySelectorAll('#mindset-checklist input[type="checkbox"]').forEach((checkbox, index) => {
+
+                        if (state.mindsetShift[index] !== undefined) {
+
+                            checkbox.checked = state.mindsetShift[index];
+
+                            checkbox.dispatchEvent(new Event('change')); // Trigger change to update styling
+
+                        }
+
+                    });
+
+
+
+                    window.postedWeeks = state.postedWeeks || 0; // Set global variable
+
+                }
+
+            }
+
+
+
+            // Initialize/Load state on page load
+
+            loadState();
+
+
+
+
+
+            // Section 1: Practice Log
+
+            const practiceLogContainer = document.getElementById('practice-log');
+
+            for (let i = 1; i <= 7; i++) {
+
+                const div = document.createElement('div');
+
+                div.className = 'flex items-center bg-gray-100 p-3 rounded-lg';
+
+                div.innerHTML = `
+
+            <input type="checkbox" id="day-${i}" class="h-5 w-5 rounded mr-3 accent-teal">
+
+            <label for="day-${i}" class="flex-grow interactive-checklist-item">Day ${i}: Practice Session</label>
+
+        `;
+
+                practiceLogContainer.appendChild(div);
+
+            }
+
+
+
+            // Checklist item styling and save
+
+            document.querySelectorAll('.interactive-checklist-item').forEach(item => {
+
+                const checkbox = item.previousElementSibling;
+
+                checkbox.addEventListener('change', () => {
+
+                    item.classList.toggle('completed', checkbox.checked);
+
+                    saveState(); // Save state on checkbox change
+
+                });
+
+            });
+
+
+
+            const mindsetChecklist = document.getElementById('mindset-checklist');
+
+            mindsetChecklist.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+
+                checkbox.addEventListener('change', () => {
+
+                    checkbox.nextElementSibling.classList.toggle('completed', checkbox.checked);
+
+                    saveState(); // Save state on checkbox change
+
+                });
+
+            });
+
+
+
+            // Text input auto-save
+
+            document.getElementById('reflectionQuestion').addEventListener('input', saveState);
+
+            document.getElementById('biggestFear').addEventListener('input', saveState);
+
+            document.getElementById('dreamLifeVision_1').addEventListener('input', saveState);
+
+            document.getElementById('dreamLifeVision_2').addEventListener('input', saveState);
+
+            document.getElementById('dreamLifeVision_3').addEventListener('input', saveState);
+
+
+
+
+
+            // Section 3: Consistency Chart
+
+            const ctx = document.getElementById('consistencyChart').getContext('2d');
+
+            const totalWeeks = 12;
+
+            window.postedWeeks = window.postedWeeks !== undefined ? window.postedWeeks : 0; // Initialize or load
+
+
+
+            const chartLabels = Array.from({ length: totalWeeks }, (_, i) => `W${i + 1}`);
+
+            const chartData = {
+
+                labels: chartLabels,
+
+                datasets: [{
+
+                    label: 'Weeks Posted',
+
+                    data: Array(totalWeeks).fill(0),
+
+                    backgroundColor: (context) => {
+
+                        const index = context.dataIndex;
+
+                        return index < window.postedWeeks ? '#4ECDC4' : '#E5E7EB';
+
+                    },
+
+                    borderColor: '#FFF',
+
+                    borderWidth: 2,
+
+                    borderRadius: 5,
+
+                }]
+
+            };
+
+
+
+            const consistencyChart = new Chart(ctx, {
+
+                type: 'bar',
+
+                data: chartData,
+
+                options: {
+
+                    responsive: true,
+
+                    maintainAspectRatio: false,
+
+                    plugins: {
+
+                        legend: {
+
+                            display: false,
+
+                        },
+
+                        tooltip: {
+
+                            enabled: false
+
+                        }
+
+                    },
+
+                    scales: {
+
+                        y: {
+
+                            display: false,
+
+                            beginAtZero: true,
+
+                            max: 1,
+
+                        },
+
+                        x: {
+
+                            grid: {
+
+                                display: false,
+
+                            },
+
+                            ticks: {
+
+                                font: {
+
+                                    size: 10
+
+                                }
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            });
+
+
+
+            const addWeekButton = document.getElementById('addWeekButton');
+
+            const resetChartButton = document.getElementById('resetChartButton');
+
+
+
+            function updateChart() {
+
+                consistencyChart.data.datasets[0].data = Array(totalWeeks).fill(0).map((_, i) => i < window.postedWeeks ? 1 : 0);
+
+                consistencyChart.update();
+
+                saveState(); // Save state after chart update
+
+            }
+
+
+
+            addWeekButton.addEventListener('click', () => {
+
+                if (window.postedWeeks < totalWeeks) {
+
+                    window.postedWeeks++;
+
+                    updateChart();
+
+                }
+
+            });
+
+
+
+            resetChartButton.addEventListener('click', () => {
+
+                window.postedWeeks = 0;
+
+                updateChart();
+
+            });
+
+
+
+            updateChart(); // Initial chart update after loading state
+
+        });
+
+    </script>
+
+
+
+</body>
+
+</html>
